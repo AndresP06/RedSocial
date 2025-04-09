@@ -1,30 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
-    public function index() 
+    public function index()
     {
         return view('auth.register');
     }
+
     public function store(Request $request)
     {
-        //dd($request);
-        //dd($request->get('name'));
-
-
-        //¿como modificar el $Request?
+        // Modificar el $Request
         $request->request->add(['userName' => Str::slug($request->userName)]);
 
-
-        // Validacion de datos
-
+        // Validación de datos
         $validatedData = $request->validate([
             'name' => 'required|max:30',
             'userName' => 'required|unique:users|min:3|max:30',
@@ -33,7 +29,7 @@ class RegisterController extends Controller
             'password_confirmation' => 'required',
         ]);
 
-        // equivalente a los insert into
+        // Equivalente a los insert into
         User::create([
             'name' => $request->name,
             'username' => $request->userName,
@@ -41,20 +37,20 @@ class RegisterController extends Controller
             'password' => $request->password,
         ]);
 
-        //autenticacion de usuario
+        // Autenticación de usuario
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // verificar si y solo si al autenticacion es correcta se peude ingresar a la neuva vista 
+        // Verificar si y solo si la autenticación es correcta se puede ingresar a la nueva vista
         if (Auth::attempt($credentials)) {
             // Autenticación exitosa
-            return redirect()->route('post.index'); // O la ruta que necesites
+            $user = Auth::user(); // Obtener el usuario autenticado
+            return redirect()->route('post.index', ['user' => $user->username]); // Redirigir con el username
         }
 
-        // Redireccionamiento al muro cuando se registra el ususario
-        //return redirect()->route('post.index');
-
+        // Redireccionamiento al muro cuando se registra el usuario
+        // return redirect()->route('post.index');
     }
 }

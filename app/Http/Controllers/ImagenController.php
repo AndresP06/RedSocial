@@ -17,7 +17,7 @@ class ImagenController extends Controller
                 $nombreImagen = Str::uuid() . '.' . $imagen->extension();
 
                 // Guardar la imagen en el disco 'public'
-                $imagen->storeAs('imagenes', $nombreImagen, 'public');
+                $imagen->storeAs('imagenes/post', $nombreImagen, 'public');
 
                 Log::info('Imagen guardada correctamente: ' . $nombreImagen);
 

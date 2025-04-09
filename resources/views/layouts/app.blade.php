@@ -7,11 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('titulo')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 <body class=" bg-gray-100 ">
     <header class=" p-5 border-b bg-white shadow ">
         <div class=" container mx-auto flex justify-between items-center ">
-            <h1 class="text-3xl font-black">InstaDev </h1>
+            <a class="text-3xl font-black" href="{{ route('home') }}">InstaDev</a>
+            
 
             @auth
                 <nav class="flex gap-2  items-center">
@@ -29,7 +31,7 @@
                     <a href="{{ route('post.index', auth()->user()->username ) }}" class=" font-bold  text-gray-600 text-sm  ">
                         Hola. <span class="font-normal" >{{ auth()->user()->username }}</span>
                     </a>
-                    <a href="#" class=" font-bold text-gray-600 text-sm  ">
+                    <a href="{{ route('home') }}" class=" font-bold text-gray-600 text-sm  ">
                         Inicio
                     </a>
                     <form action="{{ route('logout') }}" method="POST">
@@ -62,6 +64,7 @@
     
     <body>
         @yield('contenido')
+        @livewireScripts
     </body>
 
     <footer class=" text-center p-5 mt-10 text-gray-500 font-bold uppercase ">
